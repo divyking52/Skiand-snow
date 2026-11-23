@@ -1062,20 +1062,20 @@ body.is-touch .newsletter input { cursor: auto; }
   opacity: .5;
 }
 
-/* Reveal / transition helpers — visible by default; JS only enhances */
+/* Reveal helpers — GSAP owns opacity/transform; no CSS transitions (they fight & flicker) */
 .reveal-up {
   opacity: 1;
   transform: none;
-  will-change: transform, opacity;
 }
 .reveal-up.is-pending {
   opacity: 0;
-  transform: translateY(36px);
+  visibility: hidden;
+  transform: translateY(24px);
 }
 .reveal-up.is-in {
   opacity: 1;
+  visibility: visible;
   transform: none;
-  transition: opacity .8s var(--ease-out), transform .8s var(--ease-out);
 }
 .section-label {
   transition: opacity .6s var(--ease-out), transform .6s var(--ease-out);
@@ -1225,10 +1225,8 @@ body.is-touch .newsletter input { cursor: auto; }
 .page-hero-bg img {
   width: 100%; height: 100%; object-fit: cover;
   filter: brightness(.78) saturate(.92);
-  will-change: transform;
   transform: translateZ(0);
 }
-.page-hero-content > * { will-change: transform, opacity; }
 .page-hero-veil {
   position: absolute; inset: 0; z-index: 1;
   background: linear-gradient(180deg, rgba(10,18,28,.35), rgba(10,18,28,.72));

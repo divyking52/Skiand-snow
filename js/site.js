@@ -136,29 +136,58 @@
     });
   });
 
-  // Light page reveals — visible by default; GSAP only enhances entrance
+  // Once-reveals: set hidden first, then tween in (avoids fromTo flash on enter)
+  const revealOnce = (targets, from, to, start = "top 92%", triggerEl = null) => {
+    const list = (window.gsap ? gsap.utils.toArray(targets) : [...(targets.length != null ? targets : [targets])]).filter(Boolean);
+    if (!list.length) return;
+    if (!window.gsap || !window.ScrollTrigger || reduceMotion) {
+      list.forEach((el) => el.classList && el.classList.add("is-in"));
+      return;
+    }
+    gsap.registerPlugin(ScrollTrigger);
+    const stagger = typeof to.stagger === "number" ? to.stagger : 0;
+    const { stagger: _s, ...rest } = to;
+    if (triggerEl) {
+      gsap.set(list, { ...from, force3D: true });
+      gsap.to(list, {
+        ...rest,
+        stagger,
+        overwrite: "auto",
+        scrollTrigger: {
+          trigger: triggerEl,
+          start,
+          toggleActions: "play none none none",
+          once: true,
+          onEnter: () => list.forEach((el) => el.classList && el.classList.add("is-in"))
+        }
+      });
+      return;
+    }
+    list.forEach((el, i) => {
+      gsap.set(el, { ...from, force3D: true });
+      gsap.to(el, {
+        ...rest,
+        delay: (rest.delay || 0) + i * stagger,
+        overwrite: "auto",
+        scrollTrigger: {
+          trigger: el,
+          start,
+          toggleActions: "play none none none",
+          once: true,
+          onEnter: () => el.classList && el.classList.add("is-in")
+        }
+      });
+    });
+  };
+
   const reveals = document.querySelectorAll(".reveal-up");
   if (reveals.length) {
     if (reduceMotion || !window.gsap || !window.ScrollTrigger) {
       reveals.forEach((el) => el.classList.add("is-in"));
     } else {
-      gsap.registerPlugin(ScrollTrigger);
-      reveals.forEach((el) => {
-        gsap.fromTo(el,
-          { y: 24, autoAlpha: 0 },
-          {
-            y: 0, autoAlpha: 1, duration: 0.75, ease: "power3.out",
-            immediateRender: false,
-            scrollTrigger: {
-              trigger: el,
-              start: "top 93%",
-              toggleActions: "play none none none",
-              once: true,
-              onEnter: () => el.classList.add("is-in")
-            }
-          }
-        );
-      });
+      revealOnce(reveals, { y: 24, autoAlpha: 0 }, {
+        y: 0, autoAlpha: 1, duration: 0.75, ease: "power3.out", clearProps: "transform"
+      }, "top 93%");
       requestAnimationFrame(() => ScrollTrigger.refresh());
     }
   }
@@ -278,14 +307,12 @@
           }
         }
       });
-      gsap.fromTo(".journal-card",
-        { y: 28, autoAlpha: 0 },
-        {
-          y: 0, autoAlpha: 1, duration: 0.7, stagger: 0.08, ease: "power3.out",
-          immediateRender: false,
-          scrollTrigger: { trigger: journalSection, start: "top 70%", toggleActions: "play none none none", once: true }
-        }
-      );
+      const jCards = gsap.utils.toArray(".journal-card");
+      gsap.set(jCards, { y: 24, autoAlpha: 0, force3D: true });
+      gsap.to(jCards, {
+        y: 0, autoAlpha: 1, duration: 0.7, stagger: 0.08, ease: "power3.out", overwrite: "auto",
+        scrollTrigger: { trigger: journalSection, start: "top 70%", toggleActions: "play none none none", once: true }
+      });
     }
   }
 
@@ -338,55 +365,41 @@
       tiles.forEach((tile, i) => {
         const img = tile.querySelector(".gallery-tile-media img");
         const meta = tile.querySelector(".gallery-tile-meta");
-        const fromX = i % 3 === 0 ? -36 : i % 3 === 1 ? 0 : 36;
-        gsap.fromTo(tile,
-          { y: 40, x: fromX, autoAlpha: 0 },
-          {
-            y: 0,
-            x: 0,
-            autoAlpha: 1,
-            duration: 0.9,
-            ease: "power3.out",
-            immediateRender: false,
+        const fromX = i % 3 === 0 ? -28 : i % 3 === 1 ? 0 : 28;
+        gsap.set(tile, { y: 32, x: fromX, autoAlpha: 0, force3D: true });
+        gsap.to(tile, {
+          y: 0, x: 0, autoAlpha: 1, duration: 0.85, ease: "power3.out", overwrite: "auto",
+          scrollTrigger: {
+            trigger: tile,
+            start: "top 92%",
+            toggleActions: "play none none none",
+            once: true
+          }
+        });
+        if (meta) {
+          gsap.set(meta, { y: 12, autoAlpha: 0 });
+          gsap.to(meta, {
+            y: 0, autoAlpha: 1, duration: 0.6, delay: 0.08, ease: "power2.out", overwrite: "auto",
             scrollTrigger: {
               trigger: tile,
-              start: "top 92%",
+              start: "top 90%",
               toggleActions: "play none none none",
               once: true
             }
-          }
-        );
-        if (meta) {
-          gsap.fromTo(meta,
-            { y: 14, autoAlpha: 0 },
-            {
-              y: 0,
-              autoAlpha: 1,
-              duration: 0.65,
-              delay: 0.1,
-              ease: "power2.out",
-              immediateRender: false,
-              scrollTrigger: {
-                trigger: tile,
-                start: "top 88%",
-                toggleActions: "play none none none",
-                once: true
-              }
-            }
-          );
+          });
         }
         if (img) {
           gsap.fromTo(img,
-            { yPercent: -14, scale: 1.16 },
+            { yPercent: -8, scale: 1.1 },
             {
-              yPercent: 10,
-              scale: 1.05,
+              yPercent: 6,
+              scale: 1.02,
               ease: "none",
               scrollTrigger: {
                 trigger: tile,
                 start: "top bottom",
                 end: "bottom top",
-                scrub: 0.9
+                scrub: true
               }
             }
           );
@@ -401,203 +414,95 @@
   if (isSatellite && window.gsap && window.ScrollTrigger && !reduceMotion) {
     gsap.registerPlugin(ScrollTrigger);
 
-    // Scroll progress bar
     const progressEl = document.querySelector(".scroll-progress");
     if (progressEl) {
+      gsap.set(progressEl, { scaleX: 0, transformOrigin: "0% 50%" });
       gsap.to(progressEl, {
         scaleX: 1,
         ease: "none",
-        transformOrigin: "0% 50%",
-        scrollTrigger: { scrub: 0.15 }
+        scrollTrigger: {
+          start: 0,
+          end: "max",
+          scrub: 0.25
+        }
       });
-      gsap.set(progressEl, { scaleX: 0 });
     }
 
-    // Page hero entrance + parallax
     const pageHero = document.querySelector(".page-hero");
     if (pageHero) {
       const heroBg = pageHero.querySelector(".page-hero-bg img");
-      const heroContent = pageHero.querySelector(".page-hero-content");
-      const heroKids = heroContent
-        ? [...heroContent.children]
+      const heroKids = pageHero.querySelector(".page-hero-content")
+        ? [...pageHero.querySelector(".page-hero-content").children]
         : [];
-      gsap.set(heroKids, { y: 36, autoAlpha: 0 });
-      gsap.to(heroKids, {
-        y: 0,
-        autoAlpha: 1,
-        duration: 0.95,
-        stagger: 0.12,
-        ease: "power3.out",
-        delay: 0.08
-      });
+      if (heroKids.length) {
+        gsap.set(heroKids, { y: 28, autoAlpha: 0 });
+        gsap.to(heroKids, {
+          y: 0, autoAlpha: 1, duration: 0.85, stagger: 0.1, ease: "power3.out", delay: 0.05, overwrite: "auto"
+        });
+      }
       if (heroBg) {
         gsap.fromTo(heroBg,
-          { scale: 1.14, y: 0 },
+          { scale: 1.08, y: 0 },
           {
             scale: 1,
-            y: 48,
+            y: 36,
             ease: "none",
             scrollTrigger: {
               trigger: pageHero,
               start: "top top",
               end: "bottom top",
-              scrub: 0.8
+              scrub: true
             }
           }
         );
       }
     }
 
-    // Section heads
-    gsap.utils.toArray(".page-section-head, .journal-header").forEach((head) => {
-      gsap.fromTo(head.children,
-        { y: 22, autoAlpha: 0 },
-        {
-          y: 0,
-          autoAlpha: 1,
-          duration: 0.7,
-          stagger: 0.08,
-          ease: "power3.out",
-          immediateRender: false,
-          scrollTrigger: {
-            trigger: head,
-            start: "top 88%",
-            toggleActions: "play none none none",
-            once: true
-          }
-        }
-      );
+    // Skip .reveal-up / .pkg-card already handled above — only non-reveal targets here
+    document.querySelectorAll(".page-section-head, .journal-header").forEach((head) => {
+      revealOnce(head.children, { y: 18, autoAlpha: 0 }, {
+        y: 0, autoAlpha: 1, duration: 0.65, ease: "power3.out", stagger: 0.07, clearProps: "transform"
+      }, "top 88%", head);
     });
 
-    // Package cards stagger
-    const pkgCards = gsap.utils.toArray(".pkg-card");
+    const pkgCards = gsap.utils.toArray(".pkg-card:not(.reveal-up)");
     if (pkgCards.length) {
-      gsap.fromTo(pkgCards,
-        { y: 40, autoAlpha: 0 },
-        {
-          y: 0,
-          autoAlpha: 1,
-          duration: 0.85,
-          stagger: 0.1,
-          ease: "power3.out",
-          immediateRender: false,
-          scrollTrigger: {
-            trigger: pkgCards[0].parentElement,
-            start: "top 90%",
-            toggleActions: "play none none none",
-            once: true
-          }
-        }
-      );
+      revealOnce(pkgCards, { y: 32, autoAlpha: 0 }, {
+        y: 0, autoAlpha: 1, duration: 0.8, ease: "power3.out", stagger: 0.08, clearProps: "transform"
+      }, "top 90%", pkgCards[0].parentElement);
     }
 
-    // Steps / FAQ / form panels
-    gsap.utils.toArray(".step, .faq-item, .contact-card, .enquiry-card, .contact-panel, .enquire-panel").forEach((el, i) => {
-      gsap.fromTo(el,
-        { y: 28, autoAlpha: 0 },
-        {
-          y: 0,
-          autoAlpha: 1,
-          duration: 0.7,
-          delay: (i % 6) * 0.04,
-          ease: "power3.out",
-          immediateRender: false,
-          scrollTrigger: {
-            trigger: el,
-            start: "top 92%",
-            toggleActions: "play none none none",
-            once: true
-          }
-        }
-      );
-    });
+    revealOnce(
+      ".step:not(.reveal-up), .faq-item, .contact-card, .enquiry-card, .contact-panel, .enquire-panel",
+      { y: 22, autoAlpha: 0 },
+      { y: 0, autoAlpha: 1, duration: 0.65, ease: "power3.out", stagger: 0.05, clearProps: "transform" },
+      "top 92%"
+    );
 
-    // Why manifesto stage + list
     const whyShell = document.querySelector(".why-manifesto-shell");
-    if (whyShell) {
-      const stage = whyShell.querySelector(".why-manifesto-stage");
-      if (stage) {
-        gsap.fromTo(stage,
-          { x: -40, autoAlpha: 0 },
-          {
-            x: 0,
-            autoAlpha: 1,
-            duration: 1,
-            ease: "power3.out",
-            immediateRender: false,
-            scrollTrigger: {
-              trigger: whyShell,
-              start: "top 80%",
-              toggleActions: "play none none none",
-              once: true
-            }
-          }
-        );
-      }
+    const whyStage = whyShell && whyShell.querySelector(".why-manifesto-stage");
+    if (whyStage) {
+      revealOnce(whyStage, { x: -28, autoAlpha: 0 }, {
+        x: 0, autoAlpha: 1, duration: 0.9, ease: "power3.out", clearProps: "transform"
+      }, "top 80%", whyShell);
     }
 
-    // Awards marquee soft fade-in
-    const awards = document.querySelector(".awards-marquee");
-    if (awards) {
-      gsap.fromTo(awards,
-        { autoAlpha: 0, y: 16 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: awards,
-            start: "top 92%",
-            toggleActions: "play none none none",
-            once: true
-          }
-        }
-      );
-    }
+    revealOnce(".awards-marquee", { y: 12, autoAlpha: 0 }, {
+      y: 0, autoAlpha: 1, duration: 0.7, ease: "power2.out"
+    }, "top 92%");
 
-    // Voices stage
     const voices = document.querySelector(".voices-section");
     if (voices) {
-      gsap.fromTo(voices.querySelectorAll(".voices-layout > *"),
-        { y: 30, autoAlpha: 0 },
-        {
-          y: 0,
-          autoAlpha: 1,
-          duration: 0.85,
-          stagger: 0.12,
-          ease: "power3.out",
-          immediateRender: false,
-          scrollTrigger: {
-            trigger: voices,
-            start: "top 82%",
-            toggleActions: "play none none none",
-            once: true
-          }
-        }
-      );
+      revealOnce(voices.querySelectorAll(".voices-layout > *"), { y: 24, autoAlpha: 0 }, {
+        y: 0, autoAlpha: 1, duration: 0.75, ease: "power3.out", stagger: 0.1, clearProps: "transform"
+      }, "top 82%", voices);
     }
 
-    // Footer columns
-    const footerCols = document.querySelectorAll(".footer-standalone .footer-grid > *");
-    if (footerCols.length) {
-      gsap.fromTo(footerCols,
-        { y: 20, autoAlpha: 0 },
-        {
-          y: 0,
-          autoAlpha: 1,
-          duration: 0.65,
-          stagger: 0.08,
-          ease: "power2.out",
-          immediateRender: false,
-          scrollTrigger: {
-            trigger: ".footer-standalone",
-            start: "top 92%",
-            toggleActions: "play none none none",
-            once: true
-          }
-        }
-      );
+    const footer = document.querySelector(".footer-standalone");
+    if (footer) {
+      revealOnce(footer.querySelectorAll(".footer-grid > *"), { y: 16, autoAlpha: 0 }, {
+        y: 0, autoAlpha: 1, duration: 0.6, ease: "power2.out", stagger: 0.06, clearProps: "transform"
+      }, "top 94%", footer);
     }
 
     requestAnimationFrame(() => ScrollTrigger.refresh());

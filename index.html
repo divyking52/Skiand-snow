@@ -3572,38 +3572,29 @@
           .to(".scroll-indicator", { opacity: 0, ease: "none" }, 0)
           .to("#snow-canvas", { opacity: 0.25, ease: "none" }, 0);
 
-        // Play-once reveals — no reverse (Lenis + reverse = blink)
+        // Play-once reveals — hide first, then tween (no fromTo flash on enter)
         const onceIn = { toggleActions: "play none none none", once: true };
 
         gsap.utils.toArray(".section-label").forEach((el) => {
-          gsap.fromTo(el,
-            { x: -20, autoAlpha: 0 },
-            {
-              x: 0, autoAlpha: 1, duration: 0.7, ease: "power3.out",
-              immediateRender: false,
-              scrollTrigger: { trigger: el, start: "top 90%", ...onceIn }
-            }
-          );
+          gsap.set(el, { x: -16, autoAlpha: 0, force3D: true });
+          gsap.to(el, {
+            x: 0, autoAlpha: 1, duration: 0.65, ease: "power3.out", overwrite: "auto", clearProps: "transform",
+            scrollTrigger: { trigger: el, start: "top 90%", ...onceIn }
+          });
         });
         gsap.utils.toArray(".section-lead").forEach((el) => {
-          gsap.fromTo(el,
-            { y: 20, autoAlpha: 0 },
-            {
-              y: 0, autoAlpha: 1, duration: 0.8, ease: "power3.out",
-              immediateRender: false,
-              scrollTrigger: { trigger: el, start: "top 88%", ...onceIn }
-            }
-          );
+          gsap.set(el, { y: 16, autoAlpha: 0, force3D: true });
+          gsap.to(el, {
+            y: 0, autoAlpha: 1, duration: 0.75, ease: "power3.out", overwrite: "auto", clearProps: "transform",
+            scrollTrigger: { trigger: el, start: "top 88%", ...onceIn }
+          });
         });
         gsap.utils.toArray(".section-title.is-reveal").forEach((el) => {
-          gsap.fromTo(el,
-            { y: 24, autoAlpha: 0 },
-            {
-              y: 0, autoAlpha: 1, duration: 0.95, ease: "power3.out",
-              immediateRender: false,
-              scrollTrigger: { trigger: el, start: "top 85%", ...onceIn }
-            }
-          );
+          gsap.set(el, { y: 20, autoAlpha: 0, force3D: true });
+          gsap.to(el, {
+            y: 0, autoAlpha: 1, duration: 0.9, ease: "power3.out", overwrite: "auto", clearProps: "transform",
+            scrollTrigger: { trigger: el, start: "top 85%", ...onceIn }
+          });
         });
 
         // Destinations orbit is handled by initDestOrbit()
@@ -3614,45 +3605,28 @@
           const content = item.querySelector(".adv-content");
           const unlockHover = () => item.classList.add("is-ready");
           item.classList.remove("is-ready");
-          gsap.fromTo(item,
-            {
-              x: fromLeft ? -80 : 80,
-              autoAlpha: 0,
-              rotate: fromLeft ? -1.5 : 1.5
-            },
-            {
-              x: 0,
-              autoAlpha: 1,
-              rotate: 0,
-              duration: 1,
-              ease: "power3.out",
-              immediateRender: false,
-              force3D: true,
-              onComplete: unlockHover,
-              scrollTrigger: {
-                trigger: item,
-                start: "top 88%",
-                ...onceIn
-              }
-            }
-          );
+          gsap.set(item, {
+            x: fromLeft ? -80 : 80,
+            autoAlpha: 0,
+            rotate: fromLeft ? -1.5 : 1.5,
+            force3D: true
+          });
+          gsap.to(item, {
+            x: 0,
+            autoAlpha: 1,
+            rotate: 0,
+            duration: 1,
+            ease: "power3.out",
+            overwrite: "auto",
+            onComplete: unlockHover,
+            scrollTrigger: { trigger: item, start: "top 88%", ...onceIn }
+          });
           if (content) {
-            gsap.fromTo(content,
-              { x: fromLeft ? -18 : 18, autoAlpha: 0 },
-              {
-                x: 0,
-                autoAlpha: 1,
-                duration: 0.8,
-                delay: 0.1,
-                ease: "power2.out",
-                immediateRender: false,
-                scrollTrigger: {
-                  trigger: item,
-                  start: "top 88%",
-                  ...onceIn
-                }
-              }
-            );
+            gsap.set(content, { x: fromLeft ? -18 : 18, autoAlpha: 0, force3D: true });
+            gsap.to(content, {
+              x: 0, autoAlpha: 1, duration: 0.8, delay: 0.1, ease: "power2.out", overwrite: "auto",
+              scrollTrigger: { trigger: item, start: "top 88%", ...onceIn }
+            });
           }
           const img = item.querySelector("img");
           if (img) {
@@ -3667,7 +3641,10 @@
         gsap.utils.toArray(".resort-card").forEach((card, i) => {
           const info = card.querySelector(".resort-info");
           const media = card.querySelector(".resort-media");
+          const stats = card.querySelectorAll(".resort-stat");
           const fromImage = i % 2 === 0 ? -100 : 100;
+          if (info) gsap.set(info, { xPercent: fromImage, autoAlpha: 0, force3D: true });
+          if (stats.length) gsap.set(stats, { y: 12, autoAlpha: 0 });
           const tl = gsap.timeline({
             scrollTrigger: { trigger: card, start: "top 82%", ...onceIn }
           });
@@ -3679,45 +3656,32 @@
             );
           }
           if (info) {
-            tl.fromTo(info,
-              { xPercent: fromImage, autoAlpha: 0 },
-              {
-                xPercent: 0,
-                autoAlpha: 1,
-                duration: 1.05,
-                ease: "power3.out",
-                immediateRender: false,
-                force3D: true
-              },
-              0.06
-            );
+            tl.to(info, {
+              xPercent: 0, autoAlpha: 1, duration: 1.05, ease: "power3.out", force3D: true
+            }, 0.06);
           }
-          tl.fromTo(card.querySelectorAll(".resort-stat"),
-            { y: 12, autoAlpha: 0 },
-            { y: 0, autoAlpha: 1, stagger: 0.06, duration: 0.4, ease: "power2.out", immediateRender: false },
-            "-=0.35"
-          );
+          if (stats.length) {
+            tl.to(stats, {
+              y: 0, autoAlpha: 1, stagger: 0.06, duration: 0.4, ease: "power2.out"
+            }, "-=0.35");
+          }
         });
 
         // Mountain HUD entrance
-        gsap.fromTo(".mountain-hud",
-          { y: 36, autoAlpha: 0 },
-          {
-            y: 0, autoAlpha: 1, duration: 0.9, ease: "power3.out", immediateRender: false,
-            scrollTrigger: { trigger: "#mountain", start: "top 80%", ...onceIn }
-          }
-        );
-        gsap.fromTo(".hotspot-btn",
-          { x: -20, autoAlpha: 0 },
-          {
-            x: 0, autoAlpha: 1, stagger: 0.1, duration: 0.65, ease: "power3.out", immediateRender: false,
-            scrollTrigger: { trigger: "#mountain", start: "top top", ...onceIn }
-          }
-        );
+        gsap.set(".mountain-hud", { y: 36, autoAlpha: 0, force3D: true });
+        gsap.to(".mountain-hud", {
+          y: 0, autoAlpha: 1, duration: 0.9, ease: "power3.out", overwrite: "auto",
+          scrollTrigger: { trigger: "#mountain", start: "top 80%", ...onceIn }
+        });
+        gsap.set(".hotspot-btn", { x: -20, autoAlpha: 0, force3D: true });
+        gsap.to(".hotspot-btn", {
+          x: 0, autoAlpha: 1, stagger: 0.1, duration: 0.65, ease: "power3.out", overwrite: "auto",
+          scrollTrigger: { trigger: "#mountain", start: "top top", ...onceIn }
+        });
 
         // Snowboard scroll ride — media stays full-bleed via sticky pin
         gsap.timeline({
-          scrollTrigger: { trigger: "#snowboard", start: "top top", end: "bottom bottom", scrub: 0.65 }
+          scrollTrigger: { trigger: "#snowboard", start: "top top", end: "bottom bottom", scrub: true }
         })
           .fromTo(".sb-media-pin img", { scale: 1.14, yPercent: 0 }, { scale: 1, yPercent: -8, ease: "none" }, 0)
           .fromTo(".sb-rider", { yPercent: 18, rotate: -6 }, { yPercent: -42, rotate: 4, ease: "none" }, 0)
@@ -3726,63 +3690,42 @@
           .fromTo(".sb-graphic", { xPercent: 6 }, { xPercent: -12, ease: "none" }, 0);
 
         // Planner shell
-        gsap.fromTo(".planner-shell",
-          { y: 40, autoAlpha: 0 },
-          {
-            y: 0, autoAlpha: 1, duration: 0.9, ease: "power3.out", immediateRender: false,
-            scrollTrigger: { trigger: "#planner", start: "top 75%", ...onceIn }
-          }
-        );
+        gsap.set(".planner-shell", { y: 40, autoAlpha: 0, force3D: true });
+        gsap.to(".planner-shell", {
+          y: 0, autoAlpha: 1, duration: 0.9, ease: "power3.out", overwrite: "auto",
+          scrollTrigger: { trigger: "#planner", start: "top 75%", ...onceIn }
+        });
 
         // Journal grid — staggered entrance
         gsap.utils.toArray(".journal-card").forEach((card, i) => {
-          gsap.fromTo(card,
-            { y: 36, autoAlpha: 0 },
-            {
-              y: 0,
-              autoAlpha: 1,
-              duration: 0.75,
-              delay: i * 0.06,
-              ease: "power3.out",
-              immediateRender: false,
-              scrollTrigger: {
-                trigger: card,
-                start: "top 88%",
-                ...onceIn
-              }
-            }
-          );
+          gsap.set(card, { y: 28, autoAlpha: 0, force3D: true });
+          gsap.to(card, {
+            y: 0, autoAlpha: 1, duration: 0.7, delay: i * 0.05, ease: "power3.out", overwrite: "auto",
+            scrollTrigger: { trigger: card, start: "top 88%", ...onceIn }
+          });
         });
 
         // Finale
-        gsap.fromTo(".finale-inner h2",
-          { y: 40, autoAlpha: 0 },
-          {
-            y: 0, autoAlpha: 1, duration: 1, ease: "power3.out", immediateRender: false,
-            scrollTrigger: { trigger: "#finale", start: "top 75%", ...onceIn }
-          }
-        );
-        gsap.fromTo(".finale-actions .btn",
-          { y: 20, autoAlpha: 0 },
-          {
-            y: 0, autoAlpha: 1, stagger: 0.12, duration: 0.65, ease: "power3.out", immediateRender: false,
-            scrollTrigger: { trigger: "#finale", start: "top 70%", ...onceIn }
-          }
-        );
-        gsap.fromTo(".newsletter",
-          { scale: 0.97, autoAlpha: 0 },
-          {
-            scale: 1, autoAlpha: 1, duration: 0.75, ease: "power3.out", immediateRender: false,
-            scrollTrigger: { trigger: ".newsletter", start: "top 90%", ...onceIn }
-          }
-        );
-        gsap.fromTo(".footer-grid > *",
-          { y: 24, autoAlpha: 0 },
-          {
-            y: 0, autoAlpha: 1, stagger: 0.1, duration: 0.7, ease: "power3.out", immediateRender: false,
-            scrollTrigger: { trigger: ".footer", start: "top 90%", ...onceIn }
-          }
-        );
+        gsap.set(".finale-inner h2", { y: 32, autoAlpha: 0, force3D: true });
+        gsap.to(".finale-inner h2", {
+          y: 0, autoAlpha: 1, duration: 0.95, ease: "power3.out", overwrite: "auto",
+          scrollTrigger: { trigger: "#finale", start: "top 75%", ...onceIn }
+        });
+        gsap.set(".finale-actions .btn", { y: 16, autoAlpha: 0, force3D: true });
+        gsap.to(".finale-actions .btn", {
+          y: 0, autoAlpha: 1, stagger: 0.1, duration: 0.6, ease: "power3.out", overwrite: "auto",
+          scrollTrigger: { trigger: "#finale", start: "top 70%", ...onceIn }
+        });
+        gsap.set(".newsletter", { scale: 0.98, autoAlpha: 0, force3D: true });
+        gsap.to(".newsletter", {
+          scale: 1, autoAlpha: 1, duration: 0.7, ease: "power3.out", overwrite: "auto",
+          scrollTrigger: { trigger: ".newsletter", start: "top 90%", ...onceIn }
+        });
+        gsap.set(".footer-grid > *", { y: 18, autoAlpha: 0, force3D: true });
+        gsap.to(".footer-grid > *", {
+          y: 0, autoAlpha: 1, stagger: 0.08, duration: 0.65, ease: "power3.out", overwrite: "auto",
+          scrollTrigger: { trigger: ".footer", start: "top 90%", ...onceIn }
+        });
 
         // Soft blob drift
         gsap.to(".float-blob", {
