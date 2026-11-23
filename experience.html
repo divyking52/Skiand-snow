@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Experience — 3D Glide & Snowboard | NÉVÉ</title>
+  <meta name="description" content="Scroll-linked 3D alpine glide and freeride snowboard story from NÉVÉ." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Figtree:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/site.css" />
+</head>
+<body>
+  <div id="loader" style="display:none" role="status" aria-hidden="true">
+    <div class="loader-inner">
+      <div class="loader-bar"><span></span></div>
+      <div class="loader-pct">0%</div>
+    </div>
+  </div>
+  <div class="scroll-progress" aria-hidden="true"></div>
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+  <header class="nav" id="nav">
+    <a href="index.html" class="logo" data-cursor>NÉVÉ</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html" data-cursor>Home</a>
+      <a href="destinations.html" data-cursor>Destinations</a>
+      <a href="about.html" data-cursor>About</a>
+      <a href="experience.html" class="is-active" data-cursor>Experience</a>
+      <a href="gallery.html" data-cursor>Gallery</a>
+      <a href="blog.html" data-cursor>Blog</a>
+      <a href="contact.html" data-cursor>Contact</a>
+      <a href="enquire.html" class="nav-cta" data-cursor>Enquire</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" data-cursor><span></span><span></span><span></span></button>
+  </header>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="destinations.html">Destinations</a>
+    <a href="about.html">About</a>
+    <a href="experience.html">Experience</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html">Contact</a>
+    <a href="enquire.html">Enquire</a>
+  </div>
+  <main id="top">
+    <section class="page-hero" style="min-height:36vh">
+      <div class="page-hero-bg"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=80" alt="Alpine experience" /></div>
+      <div class="page-hero-veil"></div>
+      <div class="page-hero-content">
+        <h1>Experience</h1>
+        <p>Scroll the 3D powder corridor, then ride the freeride story.</p>
+      </div>
+    </section>
+<!-- 3D MOUNTAIN GLIDE -->
+    <section class="mountain-3d" id="mountain">
+      <div class="mountain-pin">
+        <canvas id="mountain-canvas" aria-label="Scroll-linked 3D glide through snowy mountains"></canvas>
+        <img class="mountain-fallback" id="mountainFallback" loading="lazy"
+          src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80"
+          alt="Snowy alpine mountain landscape fallback" />
+        <div class="mountain-hud">
+          <p class="section-label">Glide Experience</p>
+          <h2 class="section-title">Glide through the powder line</h2>
+          <p class="section-lead">Scroll to fly the alpine corridor — from valley hush to summit light.</p>
+          <div class="glide-meta">
+            <span id="glideLabel">Entering the valley</span>
+            <span id="glidePct">0%</span>
+          </div>
+          <div class="glide-progress" aria-hidden="true"><span id="glideBar"></span></div>
+          <div class="hotspot-list">
+            <button type="button" class="hotspot-btn is-active" data-hotspot="0" data-cursor>
+              <strong>Valley Gate</strong>
+              <span>Begin the descent into soft blue peaks</span>
+            </button>
+            <button type="button" class="hotspot-btn" data-hotspot="1" data-cursor>
+              <strong>Village Nest</strong>
+              <span>Chalets, lifts &amp; evening glow</span>
+            </button>
+            <button type="button" class="hotspot-btn" data-hotspot="2" data-cursor>
+              <strong>Summit Light</strong>
+              <span>High ridge overlook above the clouds</span>
+            </button>
+          </div>
+        </div>
+        <p class="mountain-hint" aria-hidden="true">Scroll to glide</p>
+      </div>
+    </section>
+
+    <!-- SNOWBOARD -->
+    <section class="snowboard" id="snowboard">
+      <div class="sb-media" aria-hidden="true">
+        <div class="sb-media-pin">
+          <img src="assets/snowboard-powder.jpg" alt="" width="1920" height="1280" decoding="async" />
+        </div>
+      </div>
+      <div class="sb-sticky">
+        <p class="sb-graphic" aria-hidden="true">POWDER</p>
+        <div class="sb-copy">
+          <span class="sb-kicker">Freeride energy</span>
+          <h2>Built for the deep powder.</h2>
+          <p>Scroll and ride with us — every turn timed to the mountain’s rhythm, every line a story written in fresh snow.</p>
+        </div>
+        <figure class="sb-rider">
+          <img src="assets/neve-rider-pexels2.jpg" alt="Snowboards racked outside an alpine lodge after a powder day" width="1200" height="800" loading="lazy" decoding="async" />
+        </figure>
+      </div>
+    </section>
+
+    
+    <section class="section compact" style="text-align:center">
+      <h2 class="section-title">Inspired to go?</h2>
+      <div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin-top:1.25rem">
+        <a href="destinations.html" class="btn btn-primary" data-cursor>View packages</a>
+        <a href="contact.html" class="btn btn-ghost" data-cursor>Send enquiry</a>
+      </div>
+    </section>
+  </main>
+  <footer class="footer footer-standalone">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">NÉVÉ</a>
+        <p>Premium ski travel for powder obsessives.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <a href="destinations.html">Destinations</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="experience.html">Experience</a>
+      </div>
+      <div>
+        <h4>Plan</h4>
+        <a href="contact.html">Contact</a>
+        <a href="blog.html">Blog</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <a href="mailto:hello@neve.travel">hello@neve.travel</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 NÉVÉ</span>
+      <span>Demo experience</span>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js"></script>
+  <script src="js/site.js"></script>
+  <script src="js/experience.js"></script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact & FAQ | NÉVÉ</title>
+  <meta name="description" content="Enquire about alpine packages, or find answers in the NÉVÉ FAQ." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Figtree:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/site.css" />
+</head>
+<body>
+  <div class="scroll-progress" aria-hidden="true"></div>
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+  <header class="nav" id="nav">
+    <a href="index.html" class="logo magnetic" data-cursor>NÉVÉ</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html" data-cursor>Home</a>
+      <a href="destinations.html" data-cursor>Destinations</a>
+      <a href="about.html" data-cursor>About</a>
+      <a href="gallery.html" data-cursor>Gallery</a>
+      <a href="blog.html" data-cursor>Blog</a>
+      <a href="contact.html" data-cursor>Contact</a>
+      <a href="enquire.html" class="nav-cta magnetic" data-cursor>Enquire</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" data-cursor>
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="destinations.html">Destinations</a>
+    <a href="about.html">About</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="blog.html">Blog</a>
+    <a href="enquire.html">Enquire</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+<main>
+  <section class="page-hero">
+    <div class="page-hero-bg"><img src="https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=1800&q=80" alt="Contact hero" /></div>
+    <div class="page-hero-veil"></div>
+    <div class="page-hero-content"><h1>Contact</h1><p>Talk to an advisor — sample itineraries, clear inclusions, no live inventory here.</p></div>
+  </section>
+  <section class="section compact">
+    <div class="contact-grid">
+      <div class="contact-card">
+        <h2 class="section-title" style="font-size:1.6rem">Visit &amp; reach us</h2>
+        <p style="margin:1rem 0 .5rem"><strong>Email</strong><br/><a href="mailto:hello@neve.travel">hello@neve.travel</a></p>
+        <p style="margin:.75rem 0"><strong>Phone</strong><br/><a href="tel:+41445550192">+41 44 555 0192</a></p>
+        <p class="footer-address" style="margin-top:1rem">Bahnhofstrasse 12<br/>8001 Zürich, Switzerland</p>
+        <p style="margin-top:1.25rem;font-size:.9rem;color:rgba(50,59,70,.7)">Hours: Mon–Fri 09:00–18:00 CET</p>
+        <p style="margin-top:1.5rem"><a href="enquire.html" class="btn btn-primary" data-cursor>Open enquiry form</a></p>
+      </div>
+      
+        <div class="enquiry-card" id="enquiry">
+          <h2>Plan your escape</h2>
+          <p class="hint">Tell us your dates and mountain mood — sample ideas only, no live booking.</p>
+          <form class="enquiry-form" data-enquiry-form>
+            <label>Name<input name="name" required placeholder="Your name" /></label>
+            <label>Email<input type="email" name="email" required placeholder="you@email.com" /></label>
+            <label>Destination
+              <select name="destination" required>
+                <option value="">Choose</option>
+                <option>Zermatt</option><option>Chamonix</option><option>Niseko</option>
+                <option>Aspen</option><option>St. Anton</option><option>Whistler</option>
+              </select>
+            </label>
+            <label>Travel window<input name="dates" placeholder="e.g. 12–19 Jan" /></label>
+            <label>Notes<textarea name="notes" placeholder="Ski level, group size, vibe…"></textarea></label>
+            <button type="submit" class="btn btn-primary" data-cursor>Send enquiry</button>
+            <p class="enquiry-msg" role="status"></p>
+          </form>
+        </div>
+    </div>
+  </section>
+  <section class="section compact" id="faq">
+    <p class="section-label">FAQ</p>
+    <h2 class="section-title">Frequently asked</h2>
+    <div class="faq-list">
+      
+      <div class="faq-item">
+        <button type="button" aria-expanded="false" data-cursor>Are prices live inventory?<span>+</span></button>
+        <div class="faq-panel">No — packages and rates on this site are illustrative samples for planning conversations.</div>
+      </div>
+      <div class="faq-item">
+        <button type="button" aria-expanded="false" data-cursor>Do you arrange flights?<span>+</span></button>
+        <div class="faq-panel">We can coordinate with preferred carriers and ground transfers; your advisor will outline options.</div>
+      </div>
+      <div class="faq-item">
+        <button type="button" aria-expanded="false" data-cursor>What skill levels do you host?<span>+</span></button>
+        <div class="faq-panel">From first turns to guided freeride — we match terrain, coaching, and pace to your group.</div>
+      </div>
+      <div class="faq-item">
+        <button type="button" aria-expanded="false" data-cursor>When should we enquire?<span>+</span></button>
+        <div class="faq-panel">Ideal 3–6 months ahead for peak weeks; last-minute may still work depending on lodging.</div>
+      </div>
+      <div class="faq-item">
+        <button type="button" aria-expanded="false" data-cursor>Is travel insurance required?<span>+</span></button>
+        <div class="faq-panel">Strongly recommended, including winter sports cover for off-piste days.</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+  <footer class="footer footer-standalone">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">NÉVÉ</a>
+        <p>Premium ski travel for those who measure winters in first tracks, warm chalets, and stories told by firelight.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <a href="destinations.html">Destinations</a>
+        <a href="about.html">About</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="blog.html">Blog</a>
+      </div>
+      <div>
+        <h4>Plan</h4>
+        <a href="enquire.html">Enquiry</a>
+        <a href="contact.html">Contact</a>
+        <a href="contact.html#faq">FAQ</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <a href="mailto:hello@neve.travel">hello@neve.travel</a>
+        <a href="tel:+41445550192">+41 44 555 0192</a>
+        <p class="footer-address">Bahnhofstrasse 12<br/>8001 Zürich, Switzerland</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 NÉVÉ Alpine Travel.</span>
+      <span>Sample pricing for demonstration.</span>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="js/site.js"></script>
+</body>
+</html>
